@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="calendar.svg" type="image/svg+xml">
+    <style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #0d1117;
+        color: #c9d1d9;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .container {
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        background-color: #161b22;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s;
+      }
+      .container:hover {
+        transform: translateY(-5px);
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      fieldset {
+        border: none;
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+        color: #c9d1d9;
+      }
+      input, select, textarea, button {
+        font-family: 'Montserrat', sans-serif;
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        border: 1px solid #30363d;
+        border-radius: 5px;
+        background-color: #0d1117;
+        color: #c9d1d9;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        outline: none;
+      }
+      input::placeholder, textarea::placeholder {
+        color: #888;
+      }
+      input:focus, select:focus, textarea:focus {
+        border-color: #2bfaf0;
+        box-shadow: 0 0 8px rgba(89, 182, 156, 0.6);
+      }
+      textarea {
+        resize: none;
+      }
+      button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        background-color: #1ad6a1;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      }
+      button:hover {
+        background-color: #34e9b3;
+        transform: translateY(-3px);
+        box-shadow: 0 0 10px rgba(36, 223, 135, 0.6);
+      }
+      .result-container {
+        display: none;
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+        border: 1px solid #30363d;
+        border-radius: 10px;
+        background-color: #161b22;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s;
+      }
+      .result-container:hover {
+        transform: translateY(-5px);
+      }
+      .result-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .result-content p {
+        margin: 10px 0;
+      }
+      .result-section {
+        margin-bottom: 20px;
+      }
+      .result-section h3 {
+        margin-bottom: 10px;
+        color: #2eead4;
+      }
+      small.obligatoire {
+        display: block;
+        color: #888;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+      .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      .error-label {
+        color: #fa307a;
+      }
+      select#phoneCountry option {
+        background-repeat: no-repeat;
+        background-position: left center;
+        padding-left: 24px;
+      }
+      ::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        cursor: pointer;
+      }
+      /* Scrollbar customization */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #161b22;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #13f4a1;
+        border-radius: 50%;
+        border: 2px solid #161b22;
+      }
+      html {
+        scrollbar-width: thin;
+        scrollbar-color: #18ffb6 #161b22;
+      }
+    </style>
+</head>
+<body>
+    
+    <div class="container form-container">
+        <h1>Schedule</h1>
+        <form id="personalForm" onsubmit="handleSubmit(event)" autocomplete="off">
+            <fieldset>
+                <legend>Personal Information</legend>
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="FirstName" placeholder="Enter First Name" required autocomplete="off">
+
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="Nom" placeholder="Enter Last Name" required autocomplete="off">
+
+                <label for="dob">Date Of Birth:</label>
+                <input type="date" id="dob" name="Date de naissance" required autocomplete="off">
+
+                <label for="gender">Gender:</label>
+                <select id="gender" name="Gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <label for="workPhone">Contact Information:</label>
+                <div id="work-phone-wrapper" style="display: flex;">
+                    <select id="workPhoneCountry" name="phoneCountry" style="flex: 1;">
+                        <option value="+1" data-flag="🇺🇸">+1 USA</option>
+                        <!-- Add more countries -->
+                    </select>
+                    <input type="tel" id="workPhone" name="WorkPhone" placeholder="(123)-456-7890" style="flex: 3;" autocomplete="off" maxlength="12">
+                </div>
+
+                <label for="emergencyPhone">Emergency Contact:</label>
+                <div id="emergency-phone-wrapper" style="display: flex;">
+                    <select id="emergencyPhoneCountry" name="emergencyPhoneCountry" style="flex: 1;">
+                        <option value="+1" data-flag="🇺🇸">+1 USA</option>
+                        <!-- Add more countries -->
+                    </select>
+                    <input type="tel" id="emergencyPhone" name="EmergencyPhone" placeholder="(123)-456-7890" style="flex: 3;" autocomplete="off" maxlength="12">
+                </div>
+
+                <label for="insure">Insurance Provider:</label>
+                <input type="text" id="insure" name="InsuranceProvider" placeholder="Your insurance provider" required autocomplete="off">
+
+                <button type="submit">Submit</button>
+                <p class="error-message"></p>
+            </fieldset>
+        </form>
+    </div>
+
+    <script>
+document.getElementById('personalForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission (page reload)
+    
+    // Hide the form
+    this.style.display = 'none';
+    
+    // Create a new element to display the success message
+    const message = document.createElement('p');
+    message.textContent = 'Form was submitted!';
+    message.style.color = '#20D69B';
+    message.style.fontSize = '24px';
+    message.style.textAlign = 'center';
+    message.style.fontWeight = 'bold';
+    
+    // Append the message to the parent container
+    document.querySelector('.form-container').appendChild(message);
+    
+    // Clear the form
+    this.reset();
+});
+    </script>
+</body>
+</html>
